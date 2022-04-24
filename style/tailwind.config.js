@@ -1,3 +1,4 @@
+const defaultTheme = require('../fonts/Nunito-Bold.ttf')
 
 module.exports = {
   content: [
@@ -17,13 +18,17 @@ module.exports = {
       },
       colors:{
         bgreen:"#0FC2C0",
-        bmove:"#6C87FF"
+        bmove:"#6C87FF",
+        bleu:"#1F99DF",
+        yellow:"#695F27"
       },
       outline: {
         blue: '2px solid rgba(0, 112, 244, 0.5)',
       },
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
+        'nun-bold': 'nunito-bold',
+        'nun': 'nunito-regular',
       },
       fontSize: {
         xs: ['0.75rem', { lineHeight: '1.5' }],
