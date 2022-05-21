@@ -6,14 +6,18 @@ import {connect} from 'react-redux'
 const Middleware = ({children,user}) => {
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState();
-  const [socket, setSocket] = useState(new WebSocket( `ws://192.168.42.221:8000/ws/ehr/${user.inn}/`));
+  const [socket, setSocket] = useState();
+  const stupSocket = async ()=>{await  setSocket(new WebSocket( `ws://192.168.42.221:8000/ws/ehr/${user?.inn}/`))
+  socket.onmessage=(message) => {
+    setMessage(message)
+    setShow(true)
+    console.log(message)
+  }
+}
 
   useEffect(() => {
-      socket.onmessage=(message) => {
-      setMessage(message)
-      setShow(true)
-    }
-  }, [])
+      stupSocket()
+  }, [user])
 
   return (
     <>

@@ -1,18 +1,35 @@
 import { View, Text,Pressable,Modal,TextInput, ScrollView ,TouchableWithoutFeedback,Keyboard,Image } from 'react-native'
 import React,{useEffect,useState} from 'react'
 import tw from '../style/twrnc'
+import {connect} from 'react-redux'
 
-export default function Notifications({show,setShow,request}) {
+function Notifications({show,setShow,request,ehr}) {
     const [message,setMessage] = useState({inn:""})
     const [isFocused, setIsFocused] =useState(false)
+    const [socket, setSocket] = useState();
 
     useEffect(() => {
         try{
             setMessage(JSON.parse(request.data).message)
+            setSocket(new WebSocket( `ws://192.168.42.221:8000/ws/ehr/${message.inn}/`))
         }
         catch (err) {}
     }, [request])
-    
+
+    const handleRequest=()=>{
+        socket.send(JSON.stringify({
+          'message': "request",
+          'from' : ehr
+        }));
+        setShow(false)
+    }
+    const handleRefuse=()=>{
+        socket.send(JSON.stringify({
+          'message': "request",
+          'from' : 0
+        }));
+        setShow(false)
+    }
   return (
     <Modal visible={show}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -48,11 +65,11 @@ export default function Notifications({show,setShow,request}) {
                         <TextInput value={message.email} style={tw`p-2 pl-8 h-12  rounded-lg  border-2  w-full ${isFocused? "border-bgreen" : "border-gray-300"}`}
                             placeholder="Email"/>
                     </View>           
-                <View style={tw`w-4/6 mx-auto  flex-row bg-red-500 items-center justify-end  rounded-lg mt-6 shadow-lg overflow-hidden`}>
-                  <Pressable style={tw`w-1/2 items-center  ` } >
+                <View style={tw`w-4/6 mx-auto  flex-row bg-red-500 items-center justify-end  rounded-lg mt-6 shadow-lg overflow-hidden`} >
+                  <Pressable style={tw`w-1/2 items-center  ` } onPress={handleRequest}>
                       <Text  style={tw`w-full text-center text-black text-lg font-nun-bold  bg-bgreen text-white  py-2`}>✓</Text>
                   </Pressable>
-                  <Pressable style={tw`w-1/2 items-center ` } >
+                  <Pressable style={tw`w-1/2 items-center ` }  onPress={handleRefuse}>
                       <Text  style={tw`text-white font-nun-bold py-2 bg-red-500 `} >X</Text>
                   </Pressable>
                 </View>
@@ -63,3 +80,9 @@ export default function Notifications({show,setShow,request}) {
     </Modal>
   )
 }
+
+const mapStateToProps = state => ({
+    ehr: state.ehr
+  });
+
+export default connect(mapStateToProps,null)(Notifications)

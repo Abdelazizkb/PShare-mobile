@@ -1,5 +1,6 @@
 import {
-    BILLS_LOADED_SUCCESS,PRESCRIPTIONS_LOADED_SUCCESS,DIAGNOSTICS_LOADED_SUCCESS,FILES_LOADED_SUCCESS,EHR_LOADED_FAIL
+    BILLS_LOADED_SUCCESS,PRESCRIPTIONS_LOADED_SUCCESS,DIAGNOSTICS_LOADED_SUCCESS,
+    FILES_LOADED_SUCCESS,EHR_LOADED_FAIL,LOGOUT
 } from '../actions/types'
 
 
@@ -7,7 +8,8 @@ const initialState={
     "bills":[],
     "files":[],
     "prescriptions":[],
-    "diagnostics":[]
+    "diagnostics":[],
+    "appointment":[]
 }
 
 export default function ehrReducer(state=initialState,action){
@@ -20,13 +22,11 @@ export default function ehrReducer(state=initialState,action){
           bills: payload
         }
     case PRESCRIPTIONS_LOADED_SUCCESS:
-        console.log("pres",payload);
         return {
             ...state,
             prescriptions: payload
           }
     case DIAGNOSTICS_LOADED_SUCCESS:
-        console.log("diag",payload);
         return {
             ...state,
             diagnostics: payload
@@ -38,6 +38,9 @@ export default function ehrReducer(state=initialState,action){
           }
     case EHR_LOADED_FAIL:
         return state
+    case LOGOUT:
+        return initialState;
+        
     default:
         return state
     }
