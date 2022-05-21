@@ -25,7 +25,7 @@ const Visits = ({diagnostics,loadDiagnostic}) => {
                 </View>
                 <View style={tw`w-5/6`}>
 
-                    { users.map((item,index)=>(
+                    { diagnostics.map((item,index)=>(
                         <TouchableOpacity key={index}>
                             <View style={tw`w-full bg-white h-20 my-2 rounded-lg p-2 border-l-3 border-bgreen shadow-md flex-row items-center justify-around`}>
                                     <Image style={tw``} source={require('../img/doctor.png')} />

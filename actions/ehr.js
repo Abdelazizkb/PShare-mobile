@@ -4,8 +4,7 @@ import {
 
 import axios from "axios"
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const DOMAIN = 'http://192.168.1.106:8000'
+import {DOMAIN} from './auth'
 
 
 
